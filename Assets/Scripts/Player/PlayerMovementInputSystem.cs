@@ -23,7 +23,7 @@ public class PlayerMovementInputSystem : MonoBehaviour
 
     private void Update()
     {
-        Vector3 move = new Vector3(moveInput.x, 0f, moveInput.y);
+Vector3 move = new Vector3(-moveInput.x, 0f, -moveInput.y);
 
         if (move.magnitude >= 0.01f)
         {
