@@ -1,14 +1,14 @@
 fileFormatVersion: 2
-guid: 9da9ac687ceb32146aafecad6e6b5da8
+guid: 77c198d640e746c439dfb0060a283470
 ModelImporter:
-  serializedVersion: 24200
+  serializedVersion: 22200
   internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_Accesories
-    second: {fileID: 2100000, guid: 7de3c523f02fcfd42bde37ec6c0329aa, type: 2}
+      name: RabbitCake
+    second: {fileID: 2100000, guid: f11d34e09ffa9da44ba7dad88ae9654b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -61,9 +61,6 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
-    generateMeshLods: 0
-    meshLodGenerationFlags: 0
-    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -115,8 +112,8 @@ ModelImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-  productId: 372234
-  packageName: 3D Low-Poly Modular Chibi Everyday Citizens
+  productId: 341670
+  packageName: 3D Cutie Desserts
   packageVersion: 1.0.0
-  assetPath: Assets/Cookii Studio/3D Low-Poly Modular Chibi Everyday Citizens/Prefabs/Parts/Accessories/ACC_Chibi_Headphone.fbx
-  uploadId: 896448
+  assetPath: Assets/KamiChan/3D Cutie Desserts/Models/CakeRabbit/CakeRabbit.fbx
+  uploadId: 810422
