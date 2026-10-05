@@ -6,10 +6,12 @@ public class PlayerMovementInputSystem : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float turnSmoothTime = 0.08f;
+    [SerializeField] private float gravity = -9.81f;
 
     private CharacterController controller;
     private Vector2 moveInput;
     private float turnSmoothVelocity;
+    private float verticalVelocity;
 
     private void Awake()
     {
@@ -23,7 +25,7 @@ public class PlayerMovementInputSystem : MonoBehaviour
 
     private void Update()
     {
-Vector3 move = new Vector3(-moveInput.x, 0f, -moveInput.y);
+        Vector3 move = new Vector3(-moveInput.x, 0f, -moveInput.y);
 
         if (move.magnitude >= 0.01f)
         {
@@ -36,7 +38,15 @@ Vector3 move = new Vector3(-moveInput.x, 0f, -moveInput.y);
             );
 
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
-            controller.Move(move * moveSpeed * Time.deltaTime);
         }
+
+        if (controller.isGrounded && verticalVelocity < 0f)
+        {
+            verticalVelocity = -2f;
+        }
+
+        verticalVelocity += gravity * Time.deltaTime;
+        Vector3 velocity = new Vector3(move.x * moveSpeed, verticalVelocity, move.z * moveSpeed);
+        controller.Move(velocity * Time.deltaTime);
     }
 }
