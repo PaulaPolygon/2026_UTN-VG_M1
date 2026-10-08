@@ -9,6 +9,7 @@ public class PlayerMovementInputSystem : MonoBehaviour
     [SerializeField] private float gravity = -9.81f;
 
     private CharacterController controller;
+    private Transform cameraTransform;
     private Vector2 moveInput;
     private float turnSmoothVelocity;
     private float verticalVelocity;
@@ -16,6 +17,16 @@ public class PlayerMovementInputSystem : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+
+        Camera mainCamera = Camera.main;
+        if (mainCamera == null)
+        {
+            Debug.LogError("PlayerMovementInputSystem requires a camera tagged MainCamera.", this);
+            enabled = false;
+            return;
+        }
+
+        cameraTransform = mainCamera.transform;
     }
 
     public void OnMove(InputValue value)
@@ -25,9 +36,22 @@ public class PlayerMovementInputSystem : MonoBehaviour
 
     private void Update()
     {
-        Vector3 move = new Vector3(-moveInput.x, 0f, -moveInput.y);
+        Vector3 cameraForward = cameraTransform.forward;
+        cameraForward.y = 0f;
+        cameraForward.Normalize();
 
-        if (move.magnitude >= 0.01f)
+        Vector3 cameraRight = cameraTransform.right;
+        cameraRight.y = 0f;
+        cameraRight.Normalize();
+
+        Vector3 move = cameraRight * moveInput.x + cameraForward * moveInput.y;
+
+        if (move.sqrMagnitude > 1f)
+        {
+            move.Normalize();
+        }
+
+        if (move.sqrMagnitude >= 0.0001f)
         {
             float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
             float angle = Mathf.SmoothDampAngle(
