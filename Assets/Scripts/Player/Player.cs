@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
             anim.SetBool("RunBack", false);
         }
 
-        if (keyboard != null && keyboard.spaceKey.isPressed)
+        if (keyboard != null && keyboard.fKey.isPressed)
         {
             anim.SetBool("Attack", true);
         }
