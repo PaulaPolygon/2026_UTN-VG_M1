@@ -83,6 +83,14 @@ public class PlayerMovementInputSystem : MonoBehaviour
             move.Normalize();
         }
 
+        if (animator != null)
+        {
+            animator.SetBool("Run", moveInput.y > 0.1f);
+            animator.SetBool("RunLeft", moveInput.x < -0.1f);
+            animator.SetBool("RunRight", moveInput.x > 0.1f);
+            animator.SetBool("RunBack", moveInput.y < -0.1f);
+        }
+
         if (move.sqrMagnitude >= 0.0001f)
         {
             float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;

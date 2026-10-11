@@ -7,6 +7,7 @@ public class CamOrbit : MonoBehaviour
     [SerializeField] private Transform orbitPivot;
     [SerializeField] private float distance = 5f;
     [SerializeField] private float sensitivity = 0.15f;
+    [SerializeField] private float gamepadSensitivity = 120f;
     [SerializeField] private float targetHeight = 1.5f;
 
     private float yaw;
@@ -27,6 +28,17 @@ public class CamOrbit : MonoBehaviour
             Vector2 delta = Mouse.current.delta.ReadValue();
             yaw += delta.x * sensitivity;
             pitch = Mathf.Clamp(pitch - delta.y * sensitivity, -20f, 70f);
+        }
+
+        if (Gamepad.current != null)
+        {
+            Vector2 lookInput = Gamepad.current.rightStick.ReadValue();
+            yaw += lookInput.x * gamepadSensitivity * Time.deltaTime;
+            pitch = Mathf.Clamp(
+                pitch - lookInput.y * gamepadSensitivity * Time.deltaTime,
+                -20f,
+                70f
+            );
         }
 
         if (orbitPivot != null)

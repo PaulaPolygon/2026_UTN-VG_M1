@@ -43,7 +43,19 @@ public class PlayerShooter : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.fKey.wasPressedThisFrame)
+        Keyboard keyboard = Keyboard.current;
+        Gamepad gamepad = Gamepad.current;
+        bool keyboardAttacking = keyboard != null && keyboard.fKey.isPressed;
+        bool gamepadAttacking = gamepad != null && gamepad.leftTrigger.isPressed;
+
+        if (hasAttackParameter)
+        {
+            animator.SetBool("Attack", keyboardAttacking || gamepadAttacking);
+        }
+
+        bool keyboardShot = keyboard != null && keyboard.fKey.wasPressedThisFrame;
+        bool gamepadShot = gamepad != null && gamepad.leftTrigger.wasPressedThisFrame;
+        if (keyboardShot || gamepadShot)
         {
             Shoot();
         }
@@ -57,13 +69,6 @@ public class PlayerShooter : MonoBehaviour
         }
 
         nextFireTime = Time.time + fireInterval;
-        if (hasAttackParameter)
-        {
-            animator.SetBool("Attack", true);
-            CancelInvoke(nameof(ResetAttackAnimation));
-            Invoke(nameof(ResetAttackAnimation), 0.2f);
-        }
-
         Ray ray = aimCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         RaycastHit[] hits = Physics.RaycastAll(ray, range);
         Array.Sort(hits, (left, right) => left.distance.CompareTo(right.distance));
@@ -188,14 +193,6 @@ public class PlayerShooter : MonoBehaviour
         }
 
         hideTracerCoroutine = null;
-    }
-
-    private void ResetAttackAnimation()
-    {
-        if (animator != null && hasAttackParameter)
-        {
-            animator.SetBool("Attack", false);
-        }
     }
 
     private void OnDestroy()
