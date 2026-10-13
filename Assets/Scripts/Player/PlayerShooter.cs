@@ -11,20 +11,52 @@ public class PlayerShooter : MonoBehaviour
     [SerializeField, Min(0.01f)] private float tracerDuration = 0.25f;
     [SerializeField, Min(0.001f)] private float tracerWidth = 0.18f;
     [SerializeField, Min(0.01f)] private float muzzleFlashSize = 0.45f;
+    [SerializeField, Min(1f)] private float reticleSize = 20f;
+    [SerializeField, Min(1f)] private float reticleThickness = 2f;
+    [SerializeField] private Color reticleColor = Color.white;
+    [SerializeField] private AudioClip shotSound;
+    [SerializeField, Range(0f, 1f)] private float shotVolume = 1f;
 
     private Camera aimCamera;
     private Animator animator;
+    private AudioSource shotAudioSource;
+    private StrawberryCollector strawberryCollector;
+    private MissionProgress missionProgress;
     private LineRenderer tracer;
     private LineRenderer muzzleFlash;
     private Material tracerMaterial;
     private Coroutine hideTracerCoroutine;
     private float nextFireTime;
     private bool hasAttackParameter;
+    private bool gamepadAimActive;
+
+    public bool IsAiming
+    {
+        get
+        {
+            Mouse mouse = Mouse.current;
+            return gamepadAimActive || (mouse != null && mouse.rightButton.isPressed);
+        }
+    }
+
+    public Vector3 AimDirection
+    {
+        get { return aimCamera.ScreenPointToRay(GetAimScreenPosition()).direction; }
+    }
 
     private void Awake()
     {
         aimCamera = Camera.main;
         animator = GetComponentInChildren<Animator>();
+        strawberryCollector = GetComponent<StrawberryCollector>();
+        missionProgress = GetComponent<MissionProgress>();
+        shotAudioSource = GetComponent<AudioSource>();
+        if (shotAudioSource == null)
+        {
+            shotAudioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        shotAudioSource.playOnAwake = false;
         hasAttackParameter = animator != null && Array.Exists(
             animator.parameters,
             parameter => parameter.name == "Attack" &&
@@ -38,6 +70,16 @@ public class PlayerShooter : MonoBehaviour
             return;
         }
 
+        if (strawberryCollector == null || missionProgress == null)
+        {
+            Debug.LogError(
+                "PlayerShooter requires StrawberryCollector and MissionProgress components.",
+                this
+            );
+            enabled = false;
+            return;
+        }
+
         CreateTracer();
     }
 
@@ -45,34 +87,114 @@ public class PlayerShooter : MonoBehaviour
     {
         Keyboard keyboard = Keyboard.current;
         Gamepad gamepad = Gamepad.current;
-        bool keyboardAttacking = keyboard != null && keyboard.fKey.isPressed;
+        Mouse mouse = Mouse.current;
         bool gamepadAttacking = gamepad != null && gamepad.leftTrigger.isPressed;
+        bool gamepadShot = gamepad != null &&
+                           gamepad.leftTrigger.wasPressedThisFrame;
+        bool keyboardCollect = keyboard != null && keyboard.xKey.wasPressedThisFrame;
+        bool gamepadCollect = gamepad != null && gamepad.buttonWest.wasPressedThisFrame;
+        Vector2 gamepadLookInput = gamepad != null
+            ? gamepad.rightStick.ReadValue()
+            : Vector2.zero;
+        bool gamepadLooking = gamepadLookInput.sqrMagnitude > 0.01f;
+        bool mouseMoved = mouse != null && mouse.delta.ReadValue().sqrMagnitude > 0.01f;
+        bool mouseShot = mouse != null && mouse.leftButton.wasPressedThisFrame;
+        if (gamepadAttacking || gamepadLooking)
+        {
+            gamepadAimActive = true;
+        }
+        else if (mouseMoved || mouseShot ||
+                 (mouse != null && mouse.rightButton.isPressed))
+        {
+            gamepadAimActive = false;
+        }
+
+        bool keyboardAttacking = keyboard != null && keyboard.fKey.isPressed;
+        bool mouseAttacking = mouse != null && mouse.leftButton.isPressed;
+        bool hasHunterInAim = (keyboardAttacking || gamepadAttacking || mouseAttacking) &&
+                              TryGetAimedHunter(out _, out _);
 
         if (hasAttackParameter)
         {
-            animator.SetBool("Attack", keyboardAttacking || gamepadAttacking);
+            animator.SetBool("Attack", hasHunterInAim);
+        }
+        bool keyboardShot = keyboard != null && keyboard.fKey.wasPressedThisFrame;
+        if (keyboardCollect || gamepadCollect)
+        {
+            Ray collectionRay = aimCamera.ScreenPointToRay(GetAimScreenPosition());
+            strawberryCollector.TryCollect(collectionRay);
         }
 
-        bool keyboardShot = keyboard != null && keyboard.fKey.wasPressedThisFrame;
-        bool gamepadShot = gamepad != null && gamepad.leftTrigger.wasPressedThisFrame;
-        if (keyboardShot || gamepadShot)
+        if (keyboardShot || gamepadShot || mouseShot)
         {
             Shoot();
         }
     }
 
+    private void OnGUI()
+    {
+        Vector2 aimScreenPosition = GetAimScreenPosition();
+        float left = aimScreenPosition.x - reticleSize * 0.5f;
+        float top = Screen.height - aimScreenPosition.y - reticleSize * 0.5f;
+        Color previousColor = GUI.color;
+        GUI.color = reticleColor;
+
+        GUI.DrawTexture(
+            new Rect(left, top, reticleSize, reticleThickness),
+            Texture2D.whiteTexture
+        );
+        GUI.DrawTexture(
+            new Rect(left, top + reticleSize - reticleThickness, reticleSize, reticleThickness),
+            Texture2D.whiteTexture
+        );
+        GUI.DrawTexture(
+            new Rect(left, top, reticleThickness, reticleSize),
+            Texture2D.whiteTexture
+        );
+        GUI.DrawTexture(
+            new Rect(left + reticleSize - reticleThickness, top, reticleThickness, reticleSize),
+            Texture2D.whiteTexture
+        );
+
+        GUI.color = previousColor;
+    }
+
+    private Vector2 GetAimScreenPosition()
+    {
+        return new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+    }
+
     private void Shoot()
     {
-        if (Time.time < nextFireTime)
+        if (Time.time < nextFireTime ||
+            !TryGetAimedHunter(out EnemyHealth enemy, out RaycastHit hit))
         {
             return;
         }
 
         nextFireTime = Time.time + fireInterval;
-        Ray ray = aimCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+        if (shotSound != null)
+        {
+            shotAudioSource.PlayOneShot(shotSound, shotVolume);
+        }
+
+        Ray ray = aimCamera.ScreenPointToRay(GetAimScreenPosition());
+        if (enemy.TakeDamage(damage))
+        {
+            missionProgress.CompleteMission(MissionProgress.Objective.HunterDefeated);
+        }
+
+        ShowTracer(ray.origin, hit.point);
+    }
+
+    private bool TryGetAimedHunter(out EnemyHealth aimedHunter, out RaycastHit hunterHit)
+    {
+        aimedHunter = null;
+        hunterHit = default;
+
+        Ray ray = aimCamera.ScreenPointToRay(GetAimScreenPosition());
         RaycastHit[] hits = Physics.RaycastAll(ray, range);
         Array.Sort(hits, (left, right) => left.distance.CompareTo(right.distance));
-        Vector3 tracerEnd = ray.GetPoint(range);
 
         foreach (RaycastHit hit in hits)
         {
@@ -81,17 +203,22 @@ public class PlayerShooter : MonoBehaviour
                 continue;
             }
 
-            tracerEnd = hit.point;
-            EnemyHealth enemy = hit.collider.GetComponentInParent<EnemyHealth>();
-            if (enemy != null)
+            if (hit.collider.GetComponentInParent<StrawberryCollectible>() != null)
             {
-                enemy.TakeDamage(damage);
+                continue;
             }
 
-            break;
+            aimedHunter = hit.collider.GetComponentInParent<EnemyHealth>();
+            if (aimedHunter == null)
+            {
+                return false;
+            }
+
+            hunterHit = hit;
+            return true;
         }
 
-        ShowTracer(ray.origin, tracerEnd);
+        return false;
     }
 
     private void CreateTracer()

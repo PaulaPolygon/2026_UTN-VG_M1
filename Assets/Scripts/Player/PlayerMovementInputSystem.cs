@@ -11,6 +11,7 @@ public class PlayerMovementInputSystem : MonoBehaviour
 
     private CharacterController controller;
     private Animator animator;
+    private PlayerShooter shooter;
     private Transform cameraTransform;
     private Vector2 moveInput;
     private float turnSmoothVelocity;
@@ -23,6 +24,7 @@ public class PlayerMovementInputSystem : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+        shooter = GetComponent<PlayerShooter>();
         hasJumpTrigger = animator != null && System.Array.Exists(
             animator.parameters,
             parameter => parameter.name == "Jump" &&
@@ -91,9 +93,16 @@ public class PlayerMovementInputSystem : MonoBehaviour
             animator.SetBool("RunBack", moveInput.y < -0.1f);
         }
 
-        if (move.sqrMagnitude >= 0.0001f)
+        Vector3 facingDirection = move;
+        if (shooter != null && shooter.IsAiming)
         {
-            float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
+            facingDirection = shooter.AimDirection;
+            facingDirection.y = 0f;
+        }
+
+        if (facingDirection.sqrMagnitude >= 0.0001f)
+        {
+            float targetAngle = Mathf.Atan2(facingDirection.x, facingDirection.z) * Mathf.Rad2Deg;
             float angle = Mathf.SmoothDampAngle(
                 transform.eulerAngles.y,
                 targetAngle,

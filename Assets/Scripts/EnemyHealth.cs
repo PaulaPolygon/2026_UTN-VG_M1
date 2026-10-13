@@ -11,17 +11,20 @@ public class EnemyHealth : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int amount)
+    public bool TakeDamage(int amount)
     {
         if (amount <= 0 || currentHealth <= 0)
         {
-            return;
+            return false;
         }
 
         currentHealth = Mathf.Max(0, currentHealth - amount);
         if (currentHealth == 0)
         {
             Destroy(gameObject);
+            return true;
         }
+
+        return false;
     }
 }
