@@ -115,6 +115,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 517860288975539375}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78c71e3a241a4c51a44a60bc3a49e88, type: 3}
+  m_Script: {fileID: 11500000, guid: 78c71e3a241a4c51a44a60bc3a49e88c, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::StrawberryCollectible
