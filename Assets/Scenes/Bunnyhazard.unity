@@ -8232,70 +8232,6 @@ MonoBehaviour:
   sensitivity: 0.15
   gamepadSensitivity: 120
   targetHeight: 1.5
---- !u!1001 &333973270
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 13.327393
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.447459
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 40.677765
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4031726145244733109, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: a13dad0df3d23294fa7eb73e3b5593e0, type: 2}
-    - target: {fileID: 919132149155446097, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      propertyPath: m_Name
-      value: Stylized bunny@Fast Run
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 703487385}
-  m_SourcePrefab: {fileID: 100100000, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
 --- !u!1001 &337147051
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12518,33 +12454,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2348675184722094966, guid: c1a4bb6e343baef4c84afe7a8a9324b4, type: 3}
   m_PrefabInstance: {fileID: 693462587}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &703487383 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7a9d88ba19d5bc24a9ac61c5a92b3896, type: 3}
-  m_PrefabInstance: {fileID: 333973270}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &703487385
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 703487383}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 3e36079ee95c101438556da651b0ce6a, type: 3}
-  m_Controller: {fileID: 9100000, guid: c42dfacf87d62314c9698f7cc28235a9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &719899086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17880,9 +17789,27 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2214481780180350215, guid: 6086e51dfc1be664e84d1b50a0e56b8f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214481780180350215, guid: 6086e51dfc1be664e84d1b50a0e56b8f, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 8aae897902e3e1a4b986a70e5f714d3f, type: 2}
+      objectReference: {fileID: 9100000, guid: 14bc4e67a9cd96044ad1f605b62ad4ec, type: 2}
+    - target: {fileID: 2214481780180350215, guid: 6086e51dfc1be664e84d1b50a0e56b8f, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214481780180350215, guid: 6086e51dfc1be664e84d1b50a0e56b8f, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'Hips'\n\tTransform 'RightForeArm'\n\tTransform
+        'RightHandIndex2'\n\tTransform 'LeftLeg'\n\tTransform 'Hips'\n\tTransform
+        'Spine1'\n\tTransform 'LeftHandIndex1'\n\tTransform 'RightHand'\n\tTransform
+        'LeftForeArm'\n\tTransform 'RightHandThumb2'\n\tand more ...\n\tFrom animation
+        clip 'Idle'"
+      objectReference: {fileID: 0}
     - target: {fileID: 4832528469960488391, guid: 6086e51dfc1be664e84d1b50a0e56b8f, type: 3}
       propertyPath: m_Name
       value: Personaje Bunny
@@ -19960,7 +19887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BunnyFollow
   target: {fileID: 1265224955}
-  followDistance: 4
+  followDistance: 1.5
   destinationUpdateInterval: 0.2
 --- !u!195 &1498139434
 NavMeshAgent:
@@ -26079,4 +26006,3 @@ SceneRoots:
   - {fileID: 122291726}
   - {fileID: 1824277382}
   - {fileID: 403489367}
-  - {fileID: 333973270}
