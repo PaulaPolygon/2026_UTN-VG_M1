@@ -13951,6 +13951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 912396900}
   - component: {fileID: 912396901}
+  - component: {fileID: 912396902}
   m_Layer: 0
   m_Name: AudioFondoLab
   m_TagString: Untagged
@@ -13995,7 +13996,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 18.238636
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -14070,6 +14071,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &912396902
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912396899}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 35.64312, y: 8.370394, z: 50}
+  m_Center: {x: -1.9105873, y: 4.3674517, z: 0}
 --- !u!1001 &924963497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20365,6 +20387,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1548188740}
   - component: {fileID: 1548188741}
+  - component: {fileID: 1548188743}
+  - component: {fileID: 1548188742}
   m_Layer: 0
   m_Name: AudioFondoCiudad
   m_TagString: Untagged
@@ -20398,8 +20422,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4157470214725824848, guid: cbc8def9db026a14285a2932e6ab054f, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 2e644a31eebbc5348b221f4302523aaf, type: 3}
-  m_PlayOnAwake: 1
+  m_Resource: {fileID: 8300000, guid: 5ab30f68e092cd34d8c0b98cea2bf85b, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
@@ -20444,7 +20468,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -20484,6 +20508,39 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &1548188742
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548188739}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 50, y: 6.8791027, z: 50}
+  m_Center: {x: 0, y: 2.9623919, z: 0}
+--- !u!114 &1548188743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548188739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 598527c50fdfc984fba7888dcfc4731e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioZonaCiudad
 --- !u!4 &1557701357 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 915984234201245256, guid: 7497d6b5522b3ef4c975da4d035b26ae, type: 3}
@@ -23579,8 +23636,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 48.600555, y: 9.56362, z: 29.365484}
-  m_Center: {x: 3.4573555, y: 2.379178, z: -3.2180986}
+  m_Size: {x: 48.600555, y: 9.56362, z: 48.35622}
+  m_Center: {x: 3.4573555, y: 2.379178, z: 6.2772694}
 --- !u!54 &1866816420
 Rigidbody:
   m_ObjectHideFlags: 0
