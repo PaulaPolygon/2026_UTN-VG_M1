@@ -5,12 +5,16 @@ using UnityEngine.AI;
 public class BunnyFollow : MonoBehaviour
 {
     [SerializeField] private Transform target;
-    [SerializeField, Min(0f)] private float followDistance = 2f;
-    [SerializeField, Min(0.05f)] private float destinationUpdateInterval = 0.2f;
+    [SerializeField, Min(0f)] private float followDistance = 0.1f;
+    [SerializeField, Min(0f)] private float sideOffset = 1.5f;
+    [SerializeField, Min(0f)] private float forwardOffset = 0.4f;
+    [SerializeField, Min(0f)] private float followSpeed = 6f;
+    [SerializeField, Min(0.05f)] private float destinationUpdateInterval = 0.05f;
 
     private NavMeshAgent agent;
     private float nextDestinationUpdate;
     private bool targetOutsideNavMeshWarningShown;
+    private bool followPositionOutsideNavMeshWarningShown;
     private bool partialPathWarningShown;
     private bool destinationErrorShown;
 
@@ -18,6 +22,7 @@ public class BunnyFollow : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.stoppingDistance = followDistance;
+        agent.speed = followSpeed;
     }
 
     private void Start()
@@ -51,8 +56,24 @@ public class BunnyFollow : MonoBehaviour
 
         targetOutsideNavMeshWarningShown = false;
 
+        Vector3 sideDirection = Vector3.ProjectOnPlane(target.right, Vector3.up).normalized;
+        Vector3 forwardDirection = Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized;
+        Vector3 desiredFollowPosition = targetHit.position + sideDirection * sideOffset + forwardDirection * forwardOffset;
+        if (!NavMesh.SamplePosition(desiredFollowPosition, out NavMeshHit followPositionHit, 2f, agent.areaMask))
+        {
+            if (!followPositionOutsideNavMeshWarningShown)
+            {
+                Debug.LogWarning("BunnyFollow cannot find walkable NavMesh near the desired follow position. Check that the player has enough walkable space beside and ahead of them.", this);
+                followPositionOutsideNavMeshWarningShown = true;
+            }
+
+            return;
+        }
+
+        followPositionOutsideNavMeshWarningShown = false;
+
         Vector3 flatPosition = transform.position;
-        Vector3 flatTargetPosition = targetHit.position;
+        Vector3 flatTargetPosition = followPositionHit.position;
         flatPosition.y = 0f;
         flatTargetPosition.y = 0f;
         float distanceToTarget = Vector3.Distance(flatPosition, flatTargetPosition);
@@ -86,7 +107,7 @@ public class BunnyFollow : MonoBehaviour
         }
 
         nextDestinationUpdate = Time.time + destinationUpdateInterval;
-        bool destinationAccepted = agent.SetDestination(targetHit.position);
+        bool destinationAccepted = agent.SetDestination(followPositionHit.position);
         if (!destinationAccepted && !destinationErrorShown)
         {
             Debug.LogError("BunnyFollow could not set a NavMesh destination. Check that the agent is on a compatible NavMesh.", this);

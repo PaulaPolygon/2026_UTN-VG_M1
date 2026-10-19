@@ -1,22 +1,22 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
-[RequireComponent(typeof(UnityEngine.AI.NavMeshAgent), typeof(Animator))]
+[RequireComponent(typeof(NavMeshAgent), typeof(Animator))]
 public class Move : MonoBehaviour
 {
     [SerializeField, HideInInspector]
-    UnityEngine.AI.NavMeshAgent agent;
+    private NavMeshAgent agent;
     [SerializeField, HideInInspector]
-    Animator animator;
+    private Animator animator;
 
-    void Reset()
+    private void Awake()
     {
-        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
     }
 
-
-    void Update()
+    private void Update()
     {
-        animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
+        animator.SetFloat("Blend", agent.velocity.sqrMagnitude);
     }
 }
