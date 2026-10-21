@@ -16,7 +16,8 @@ public class PlayerShooter : MonoBehaviour
     [SerializeField] private Color reticleColor = Color.white;
     [SerializeField] private AudioClip shotSound;
     [SerializeField, Range(0f, 1f)] private float shotVolume = 1f;
-
+    [SerializeField] private ParticleSystem shotParticles;
+    [SerializeField] private Transform muzzlePoint;
     private Camera aimCamera;
     private Animator animator;
     private AudioSource shotAudioSource;
@@ -182,6 +183,18 @@ public class PlayerShooter : MonoBehaviour
         if (enemy.TakeDamage(damage))
         {
             missionProgress.CompleteMission(MissionProgress.Objective.HunterDefeated);
+        }
+
+        if (shotParticles != null)
+        {
+            Vector3 position = muzzlePoint != null ? muzzlePoint.position : transform.position;
+            Quaternion rotation = muzzlePoint != null ? muzzlePoint.rotation : transform.rotation;
+
+            ParticleSystem particles = Instantiate(shotParticles, position, rotation);
+            particles.Play();
+
+            ParticleSystem.MainModule main = particles.main;
+            Destroy(particles.gameObject, main.duration + main.startLifetime.constantMax);
         }
 
         ShowTracer(ray.origin, hit.point);

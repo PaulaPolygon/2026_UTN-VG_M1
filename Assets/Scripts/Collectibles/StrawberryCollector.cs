@@ -9,6 +9,7 @@ public class StrawberryCollector : MonoBehaviour
     [SerializeField, Min(0.1f)] private float collectionRange = 5f;
     [SerializeField, Min(1)] private int strawberriesRequiredForMission = 3;
     [SerializeField] private TMP_Text counterText;
+    [SerializeField] private ParticleSystem collectionParticles;
 
     private MissionProgress missionProgress;
     private int strawberriesCollected;
@@ -78,6 +79,22 @@ public class StrawberryCollector : MonoBehaviour
 
     private void Collect(Transform strawberry)
     {
+        if (collectionParticles != null)
+        {
+            ParticleSystem particles = Instantiate(
+                collectionParticles,
+                strawberry.position,
+                strawberry.rotation
+            );
+            particles.Play();
+
+            ParticleSystem.MainModule main = particles.main;
+            Destroy(
+                particles.gameObject,
+                main.duration + main.startDelay.constantMax + main.startLifetime.constantMax
+            );
+        }
+
         Destroy(strawberry.gameObject);
         strawberriesCollected++;
         UpdateCounter();
