@@ -10,6 +10,7 @@ public class StrawberryCollector : MonoBehaviour
     [SerializeField, Min(1)] private int strawberriesRequiredForMission = 3;
     [SerializeField] private TMP_Text counterText;
     [SerializeField] private ParticleSystem collectionParticles;
+    [SerializeField] private AudioClip collectionSound;
 
     private MissionProgress missionProgress;
     private int strawberriesCollected;
@@ -79,6 +80,11 @@ public class StrawberryCollector : MonoBehaviour
 
     private void Collect(Transform strawberry)
     {
+        if (collectionSound != null)
+        {
+            AudioSource.PlayClipAtPoint(collectionSound, strawberry.position);
+        }
+
         if (collectionParticles != null)
         {
             ParticleSystem particles = Instantiate(
