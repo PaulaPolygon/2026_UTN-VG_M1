@@ -57,6 +57,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NoiseTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -104,6 +108,15 @@ Material:
     - _LocalDepthStrength: 0
     - _LocalSnapStrength: 1
     - _LocalUvSnapStrength: 1
+    - _MBAmplitude: 1.5
+    - _MBAmplitudeOffset: 2
+    - _MBDefaultBending: 0
+    - _MBFrequency: 1.11
+    - _MBFrequencyOffset: 0
+    - _MBMaxHeight: 10
+    - _MBPhase: 1
+    - _MBWindDir: 0
+    - _MBWindDirOffset: 20
     - _Metallic: 0
     - _Mode: 0
     - _NormalScale: 1
@@ -111,6 +124,7 @@ Material:
     - _Parallax: 0.02
     - _PsxSpecPower: 24
     - _PsxSpecSteps: 6
+    - _QueueControl: -1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.2
@@ -128,6 +142,8 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _NoisePannerSpeed: {r: 0.05, g: 0.03, b: 0, a: 0}
+    - _NoiseTextureTilling: {r: 1, g: 1, b: 1, a: 1}
     - _PsxSpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
