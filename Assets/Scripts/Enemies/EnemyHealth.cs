@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour
+public class EnemyHealth : DamageableEntity
 {
     [SerializeField, Min(1)] private int maxHealth = 3;
     [SerializeField] private ParticleSystem deathParticles;
@@ -12,7 +12,7 @@ public class EnemyHealth : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public bool TakeDamage(int amount)
+    public override bool TakeDamage(int amount)
     {
         if (amount <= 0 || currentHealth <= 0)
         {
