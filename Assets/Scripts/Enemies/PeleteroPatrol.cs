@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody))]
-public class PeleteroPatrol : MonoBehaviour
+public class PeleteroPatrol : MonoBehaviour, IEnemyStrategy, IEnemyContactStrategy
 {
     [SerializeField, Min(0.1f)] private float patrolSpeed = 1.5f;
     [SerializeField, Min(0f)] private float patrolDistance = 3f;
@@ -36,7 +36,7 @@ public class PeleteroPatrol : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public void Execute()
     {
         if (patrolDistance <= 0f)
         {
@@ -66,7 +66,7 @@ public class PeleteroPatrol : MonoBehaviour
         );
     }
 
-    private void OnTriggerStay(Collider other)
+    public void OnContact(Collider other)
     {
         if (Time.time < nextDamageTime)
         {

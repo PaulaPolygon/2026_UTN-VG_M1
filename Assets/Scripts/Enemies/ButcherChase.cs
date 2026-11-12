@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody))]
-public class ButcherChase : MonoBehaviour
+public class ButcherChase : MonoBehaviour, IEnemyStrategy, IEnemyContactStrategy
 {
     [SerializeField] private Transform target;
     [SerializeField, Min(0.1f)] private float chaseSpeed = 2f;
@@ -39,7 +39,7 @@ public class ButcherChase : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public void Execute()
     {
         Vector3 offset = target.position - body.position;
         offset.y = 0f;
@@ -66,7 +66,7 @@ public class ButcherChase : MonoBehaviour
         );
     }
 
-    private void OnTriggerStay(Collider other)
+    public void OnContact(Collider other)
     {
         if (Time.time < nextDamageTime)
         {

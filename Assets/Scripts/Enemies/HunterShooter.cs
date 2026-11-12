@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class HunterShooter : MonoBehaviour
+public class HunterShooter : MonoBehaviour, IEnemyStrategy
 {
     [SerializeField] private Transform target;
     [SerializeField, Min(0.1f)] private float range = 30f;
@@ -44,7 +44,7 @@ public class HunterShooter : MonoBehaviour
         nextShotTime = Time.time + fireInterval;
     }
 
-    private void Update()
+    public void Execute()
     {
         if (Time.time < nextShotTime)
         {
