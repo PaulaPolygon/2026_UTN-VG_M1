@@ -190,12 +190,22 @@ public class PlayerShooter : MonoBehaviour
 
         Ray ray = aimCamera.ScreenPointToRay(GetAimScreenPosition());
         bool isHunter = enemy.GetComponent<HunterAim>() != null;
+        bool isPeletero = enemy.GetComponent<PeleteroPatrol>() != null;
+        bool isButcher = enemy.GetComponent<ButcherChase>() != null;
         if (enemy.TakeDamage(damage))
         {
             ShowEliminationMark(enemy);
             if (isHunter)
             {
                 missionProgress.CompleteMission(MissionProgress.Objective.HunterDefeated);
+            }
+            else if (isPeletero)
+            {
+                missionProgress.CompleteMission(MissionProgress.Objective.PeleteroDefeated);
+            }
+            else if (isButcher)
+            {
+                missionProgress.CompleteMission(MissionProgress.Objective.ButcherDefeated);
             }
         }
 

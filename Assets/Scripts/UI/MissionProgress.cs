@@ -7,10 +7,12 @@ public class MissionProgress : MonoBehaviour
     public enum Objective
     {
         HunterDefeated,
+        PeleteroDefeated,
+        ButcherDefeated,
         StrawberriesCollected
     }
 
-    [SerializeField, Min(1)] private int totalMissions = 4;
+    [SerializeField, Min(1)] private int totalMissions = 5;
     [SerializeField] private Slider progressSlider;
 
     private readonly HashSet<Objective> completedObjectives = new HashSet<Objective>();
@@ -24,6 +26,7 @@ public class MissionProgress : MonoBehaviour
             return;
         }
 
+        progressSlider.interactable = false;
         progressSlider.minValue = 0f;
         progressSlider.maxValue = 1f;
         UpdateSlider();
