@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerShooter : MonoBehaviour
 {
@@ -19,10 +18,6 @@ public class PlayerShooter : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float shotVolume = 1f;
     [SerializeField] private ParticleSystem shotParticles;
     [SerializeField] private Transform muzzlePoint;
-    [SerializeField] private Texture2D eliminatedMarkTexture;
-    [SerializeField] private RawImage hunterIcon;
-    [SerializeField] private RawImage peleteroIcon;
-    [SerializeField] private RawImage butcherIcon;
     private Camera aimCamera;
     private Animator animator;
     private AudioSource shotAudioSource;
@@ -32,9 +27,6 @@ public class PlayerShooter : MonoBehaviour
     private LineRenderer muzzleFlash;
     private Material tracerMaterial;
     private Coroutine hideTracerCoroutine;
-    private RawImage hunterEliminatedMark;
-    private RawImage peleteroEliminatedMark;
-    private RawImage butcherEliminatedMark;
     private float nextFireTime;
     private bool hasAttackParameter;
     private bool gamepadAimActive;
@@ -90,7 +82,6 @@ public class PlayerShooter : MonoBehaviour
         }
 
         CreateTracer();
-        CreateEliminationMarks();
     }
 
     private void Update()
@@ -194,7 +185,6 @@ public class PlayerShooter : MonoBehaviour
         bool isButcher = enemy.GetComponent<ButcherChase>() != null;
         if (enemy.TakeDamage(damage))
         {
-            ShowEliminationMark(enemy);
             if (isHunter)
             {
                 missionProgress.CompleteMission(MissionProgress.Objective.HunterDefeated);
@@ -261,73 +251,6 @@ public class PlayerShooter : MonoBehaviour
         }
 
         return false;
-    }
-
-    private void CreateEliminationMarks()
-    {
-        if (eliminatedMarkTexture == null)
-        {
-            Debug.LogError("PlayerShooter requires the eliminated enemy mark texture.", this);
-            return;
-        }
-
-        hunterEliminatedMark = CreateEliminationMark(hunterIcon, "Hunter Eliminated Mark");
-        peleteroEliminatedMark = CreateEliminationMark(peleteroIcon, "Peletero Eliminated Mark");
-        butcherEliminatedMark = CreateEliminationMark(butcherIcon, "Butcher Eliminated Mark");
-    }
-
-    private RawImage CreateEliminationMark(RawImage enemyIcon, string markName)
-    {
-        if (enemyIcon == null)
-        {
-            Debug.LogError($"PlayerShooter requires the {markName} target icon.", this);
-            return null;
-        }
-
-        GameObject markObject = new GameObject(
-            markName,
-            typeof(RectTransform),
-            typeof(CanvasRenderer),
-            typeof(RawImage)
-        );
-        markObject.transform.SetParent(enemyIcon.transform, false);
-        markObject.transform.SetAsLastSibling();
-
-        RectTransform markRect = (RectTransform)markObject.transform;
-        markRect.anchorMin = Vector2.zero;
-        markRect.anchorMax = Vector2.one;
-        markRect.offsetMin = Vector2.zero;
-        markRect.offsetMax = Vector2.zero;
-        markRect.pivot = new Vector2(0.5f, 0.5f);
-
-        RawImage markImage = markObject.GetComponent<RawImage>();
-        markImage.texture = eliminatedMarkTexture;
-        markImage.color = Color.white;
-        markImage.raycastTarget = false;
-        markImage.enabled = false;
-        return markImage;
-    }
-
-    private void ShowEliminationMark(EnemyHealth enemy)
-    {
-        RawImage mark = null;
-        if (enemy.GetComponent<HunterAim>() != null)
-        {
-            mark = hunterEliminatedMark;
-        }
-        else if (enemy.GetComponent<PeleteroPatrol>() != null)
-        {
-            mark = peleteroEliminatedMark;
-        }
-        else if (enemy.GetComponent<ButcherChase>() != null)
-        {
-            mark = butcherEliminatedMark;
-        }
-
-        if (mark != null)
-        {
-            mark.enabled = true;
-        }
     }
 
     private void CreateTracer()

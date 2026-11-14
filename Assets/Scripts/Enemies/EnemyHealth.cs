@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class EnemyHealth : DamageableEntity
 {
+    public event Action<EnemyHealth> Died;
+
     [SerializeField, Min(1)] private int maxHealth = 3;
     [SerializeField] private ParticleSystem deathParticles;
 
@@ -22,6 +25,8 @@ public class EnemyHealth : DamageableEntity
         currentHealth = Mathf.Max(0, currentHealth - amount);
         if (currentHealth == 0)
         {
+            Died?.Invoke(this);
+
             if (deathParticles != null)
             {
                 ParticleSystem particles = Instantiate(
