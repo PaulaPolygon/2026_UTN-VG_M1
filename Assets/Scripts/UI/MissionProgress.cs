@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class MissionProgress : MonoBehaviour
 {
+    private const float VictoryThreshold = 0.8f;
+
     public enum Objective
     {
         HunterDefeated,
@@ -16,9 +18,18 @@ public class MissionProgress : MonoBehaviour
     [SerializeField] private Slider progressSlider;
 
     private readonly HashSet<Objective> completedObjectives = new HashSet<Objective>();
+    private PlayerHealth playerHealth;
 
     private void Awake()
     {
+        playerHealth = GetComponent<PlayerHealth>();
+        if (playerHealth == null)
+        {
+            Debug.LogError("MissionProgress requires a PlayerHealth component.", this);
+            enabled = false;
+            return;
+        }
+
         if (progressSlider == null)
         {
             Debug.LogError("MissionProgress requires a mission progress Slider.", this);
@@ -57,6 +68,11 @@ public class MissionProgress : MonoBehaviour
             progressSlider.value = Mathf.Clamp01(
                 (float)completedObjectives.Count / Mathf.Max(1, totalMissions)
             );
+
+            if (progressSlider.value >= VictoryThreshold)
+            {
+                playerHealth.MostrarVictoria();
+            }
         }
     }
 }
