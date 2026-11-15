@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,7 @@ public class EnemyHudObserver : MonoBehaviour
     }
 
     [SerializeField] private Texture2D eliminatedMarkTexture;
-    [SerializeField] private EnemyIconBinding[] enemyIcons;
+    [SerializeField] private List<EnemyIconBinding> enemyIcons = new List<EnemyIconBinding>();
 
     private void Awake()
     {
@@ -24,7 +25,7 @@ public class EnemyHudObserver : MonoBehaviour
             return;
         }
 
-        if (enemyIcons == null || enemyIcons.Length == 0)
+        if (enemyIcons == null || enemyIcons.Count == 0)
         {
             Debug.LogError("EnemyHudObserver requires at least one enemy icon binding.", this);
             enabled = false;
