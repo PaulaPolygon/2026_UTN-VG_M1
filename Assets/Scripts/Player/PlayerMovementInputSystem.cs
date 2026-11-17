@@ -19,6 +19,7 @@ public class PlayerMovementInputSystem : MonoBehaviour
     private bool jumpRequested;
     private bool jumpAvailable = true;
     private bool hasJumpTrigger;
+    private bool hasStartedWalking;
 
     private void Awake()
     {
@@ -83,6 +84,15 @@ public class PlayerMovementInputSystem : MonoBehaviour
         if (move.sqrMagnitude > 1f)
         {
             move.Normalize();
+        }
+
+        if (!hasStartedWalking && moveInput.sqrMagnitude > 0.01f)
+        {
+            hasStartedWalking = true;
+            if (AudioVozController.Instance != null)
+                AudioVozController.Instance.ReproducirVozBosque();
+            else
+                Debug.LogWarning("No se encontró un AudioVozController en la escena.", this);
         }
 
         if (animator != null)

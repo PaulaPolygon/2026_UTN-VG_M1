@@ -26,6 +26,11 @@ public class AudioZonaCiudad : MonoBehaviour
                 Debug.LogWarning("No se asignó un Audio Mixer Snapshot para esta zona.", this);
 
             audioSource.Play();
+
+            if (AudioVozController.Instance != null)
+                AudioVozController.Instance.ReproducirVozCiudad();
+            else
+                Debug.LogWarning("No se encontró un AudioVozController en la escena.", this);
         }
     }
 
