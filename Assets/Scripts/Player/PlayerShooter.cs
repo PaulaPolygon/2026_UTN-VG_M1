@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
 public class PlayerShooter : MonoBehaviour
@@ -15,6 +16,7 @@ public class PlayerShooter : MonoBehaviour
     [SerializeField, Min(1f)] private float reticleThickness = 2f;
     [SerializeField] private Color reticleColor = Color.white;
     [SerializeField] private AudioClip shotSound;
+    [SerializeField] private AudioMixerGroup shotMixerGroup;
     [SerializeField, Range(0f, 1f)] private float shotVolume = 1f;
     [SerializeField] private ParticleSystem shotParticles;
     [SerializeField] private Transform muzzlePoint;
@@ -58,6 +60,12 @@ public class PlayerShooter : MonoBehaviour
         }
 
         shotAudioSource.playOnAwake = false;
+        shotAudioSource.spatialBlend = 0f;
+        if (shotMixerGroup != null)
+        {
+            shotAudioSource.outputAudioMixerGroup = shotMixerGroup;
+        }
+
         hasAttackParameter = animator != null && Array.Exists(
             animator.parameters,
             parameter => parameter.name == "Attack" &&

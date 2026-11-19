@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class StrawberryCollector : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class StrawberryCollector : MonoBehaviour
     [SerializeField] private TMP_Text counterText;
     [SerializeField] private ParticleSystem collectionParticles;
     [SerializeField] private AudioClip collectionSound;
+    [SerializeField] private AudioMixerGroup collectionMixerGroup;
 
     private MissionProgress missionProgress;
     private int strawberriesCollected;
@@ -82,7 +84,16 @@ public class StrawberryCollector : MonoBehaviour
     {
         if (collectionSound != null)
         {
-            AudioSource.PlayClipAtPoint(collectionSound, strawberry.position);
+            GameObject soundObject = new GameObject("Strawberry Collection Sound");
+            soundObject.transform.position = strawberry.position;
+
+            AudioSource soundSource = soundObject.AddComponent<AudioSource>();
+            soundSource.clip = collectionSound;
+            soundSource.outputAudioMixerGroup = collectionMixerGroup;
+            soundSource.spatialBlend = 0f;
+            soundSource.Play();
+
+            Destroy(soundObject, collectionSound.length);
         }
 
         if (collectionParticles != null)
